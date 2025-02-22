@@ -18,7 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Async<T> {
   String get message => throw _privateConstructorUsedError;
   String get code => throw _privateConstructorUsedError;
-
   int get listTotal => throw _privateConstructorUsedError;
   T? get data => throw _privateConstructorUsedError;
   List<T>? get listData => throw _privateConstructorUsedError;
@@ -121,7 +120,9 @@ mixin _$Async<T> {
   }) =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AsyncCopyWith<T, Async<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -145,6 +146,8 @@ class _$AsyncCopyWithImpl<T, $Res, $Val extends Async<T>>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -199,6 +202,8 @@ class __$$InitializingImplCopyWithImpl<T, $Res>
       _$InitializingImpl<T> _value, $Res Function(_$InitializingImpl<T>) _then)
       : super(_value, _then);
 
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -292,7 +297,9 @@ class _$InitializingImpl<T> implements Initializing<T> {
       const DeepCollectionEquality().hash(data),
       const DeepCollectionEquality().hash(_listData));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$InitializingImplCopyWith<T, _$InitializingImpl<T>> get copyWith =>
@@ -440,8 +447,11 @@ abstract class Initializing<T> implements Async<T>, _AsyncData<T> {
   T? get data;
   @override
   List<T>? get listData;
+
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$InitializingImplCopyWith<T, _$InitializingImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -466,6 +476,8 @@ class __$$RefreshingImplCopyWithImpl<T, $Res>
       _$RefreshingImpl<T> _value, $Res Function(_$RefreshingImpl<T>) _then)
       : super(_value, _then);
 
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -560,7 +572,9 @@ class _$RefreshingImpl<T> implements Refreshing<T> {
       const DeepCollectionEquality().hash(_listData),
       const DeepCollectionEquality().hash(data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RefreshingImplCopyWith<T, _$RefreshingImpl<T>> get copyWith =>
@@ -707,8 +721,11 @@ abstract class Refreshing<T> implements Async<T>, _AsyncData<T> {
   List<T>? get listData;
   @override
   T? get data;
+
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RefreshingImplCopyWith<T, _$RefreshingImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -733,6 +750,8 @@ class __$$LoadingImplCopyWithImpl<T, $Res>
       _$LoadingImpl<T> _value, $Res Function(_$LoadingImpl<T>) _then)
       : super(_value, _then);
 
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -827,7 +846,9 @@ class _$LoadingImpl<T> implements Loading<T> {
       const DeepCollectionEquality().hash(_listData),
       const DeepCollectionEquality().hash(data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadingImplCopyWith<T, _$LoadingImpl<T>> get copyWith =>
@@ -974,8 +995,11 @@ abstract class Loading<T> implements Async<T>, _AsyncData<T> {
   List<T>? get listData;
   @override
   T? get data;
+
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoadingImplCopyWith<T, _$LoadingImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1000,6 +1024,8 @@ class __$$SuccessImplCopyWithImpl<T, $Res>
       _$SuccessImpl<T> _value, $Res Function(_$SuccessImpl<T>) _then)
       : super(_value, _then);
 
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1094,7 +1120,9 @@ class _$SuccessImpl<T> implements Success<T> {
       const DeepCollectionEquality().hash(_listData),
       const DeepCollectionEquality().hash(data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SuccessImplCopyWith<T, _$SuccessImpl<T>> get copyWith =>
@@ -1241,8 +1269,11 @@ abstract class Success<T> implements Async<T>, _AsyncData<T> {
   List<T>? get listData;
   @override
   T? get data;
+
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SuccessImplCopyWith<T, _$SuccessImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1267,6 +1298,8 @@ class __$$ErrorImplCopyWithImpl<T, $Res>
       _$ErrorImpl<T> _value, $Res Function(_$ErrorImpl<T>) _then)
       : super(_value, _then);
 
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1360,7 +1393,9 @@ class _$ErrorImpl<T> implements Error<T> {
       const DeepCollectionEquality().hash(data),
       const DeepCollectionEquality().hash(_listData));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorImplCopyWith<T, _$ErrorImpl<T>> get copyWith =>
@@ -1507,8 +1542,11 @@ abstract class Error<T> implements Async<T>, _AsyncData<T> {
   T? get data;
   @override
   List<T>? get listData;
+
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ErrorImplCopyWith<T, _$ErrorImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1533,6 +1571,8 @@ class __$$UninitializedImplCopyWithImpl<T, $Res>
       $Res Function(_$UninitializedImpl<T>) _then)
       : super(_value, _then);
 
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1627,7 +1667,9 @@ class _$UninitializedImpl<T> implements Uninitialized<T> {
       const DeepCollectionEquality().hash(_listData),
       const DeepCollectionEquality().hash(data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UninitializedImplCopyWith<T, _$UninitializedImpl<T>> get copyWith =>
@@ -1775,8 +1817,11 @@ abstract class Uninitialized<T> implements Async<T>, _AsyncData<T> {
   List<T>? get listData;
   @override
   T? get data;
+
+  /// Create a copy of Async
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UninitializedImplCopyWith<T, _$UninitializedImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

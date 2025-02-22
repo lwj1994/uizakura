@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
-import 'package:uizakura/uizakura.dart';
 
 /// @author luwenjie on 2023/10/10 11:50:23
 
@@ -23,15 +21,17 @@ extension GapExtension on num {
 }
 
 extension ContextExtenstion on BuildContext {
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar(
-      Widget content,
-      {SnackBarAction? action}) {
-    ScaffoldMessenger.of(this).clearSnackBars();
-    return ScaffoldMessenger.of(this).showSnackBar(SnackBar(
-      content: content,
-      showCloseIcon: true,
-      action: action,
-    ));
+  bool get isShowing {
+    RenderObject? renderObject = findRenderObject();
+    if (renderObject != null && renderObject.attached) {
+      final RenderBox box = renderObject as RenderBox;
+      final Offset offset = box.localToGlobal(Offset.zero);
+      if (!offset.isFinite) {
+        return false;
+      }
+      return true;
+    }
+    return false;
   }
 
   Size get screenSize => MediaQuery.of(this).size;
@@ -50,37 +50,6 @@ extension ContextExtenstion on BuildContext {
   double get statusBarHeight => MediaQuery.of(this).viewPadding.top;
 
   double get navigationBarHeight => MediaQuery.of(this).viewPadding.bottom;
-
-  void dismissDialog() {
-    if (Navigator.canPop(this)) {
-      Navigator.pop(this);
-    }
-  }
-
-  void showLoadingDialog({String loadingMsg = "Loading..."}) {
-    showDialog(
-      context: this,
-      barrierDismissible: false,
-      barrierColor: Colors.transparent,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          insetPadding: EdgeInsets.zero,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const CircularProgressIndicator(),
-                const SizedBox(height: 16),
-                Text(loadingMsg)
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 }
 
 extension SliverExtenstion on Widget {
@@ -117,11 +86,4 @@ extension WidgetStateExtenstion on State<dynamic> {
     });
     return completer.future;
   }
-}
-
-FutureOr<void> copyToClipboard(String? text) async {
-  if (text.isNullOrEmpty) {
-    return;
-  }
-  return Clipboard.setData(ClipboardData(text: text!));
 }
