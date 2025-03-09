@@ -77,6 +77,11 @@ abstract class UizakuraPageState<T extends UizakuraPage>
 
   @override
   Widget build(BuildContext context) {
+    return buildPageContainer();
+  }
+
+  @protected
+  Widget buildPageContainer() {
     onPreBuild(context);
     return LifecycleAware(
       callShowOnAppResume: true,
