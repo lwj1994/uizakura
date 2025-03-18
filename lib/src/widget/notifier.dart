@@ -22,6 +22,27 @@ class UizakuraNotifier<T extends Object> extends ChangeNotifier {
     }
   }
 
+  void Function() listen(VoidCallback listener) {
+    addListener(listener);
+    void remove() {
+      removeListener(listener);
+    }
+
+    return remove;
+  }
+
+  @override
+  void dispose() {
+    _value = null;
+    super.dispose();
+  }
+
+  @override
+  @Deprecated("use listen")
+  void addListener(VoidCallback listener) {
+    super.addListener(listener);
+  }
+
   @override
   void notifyListeners() {
     super.notifyListeners();
