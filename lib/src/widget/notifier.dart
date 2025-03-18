@@ -12,9 +12,14 @@ class UizakuraNotifier<T extends Object> extends ChangeNotifier {
   T? get value => _value;
 
   // any set will notifyListeners
-  set value(T? value) {
+  setValue(
+    T? value, {
+    bool notify = true,
+  }) {
     _value = value;
-    notifyListeners();
+    if (notify) {
+      notifyListeners();
+    }
   }
 
   @override
