@@ -2,10 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 
 part 'async_state.mapper.dart';
 
-sealed class Async<T> {}
-
-@MappableClass()
-class Loading<T> extends Async<T> with LoadingMappable {
+sealed class Async<T> {
   final String message;
   final String code;
   final T? data;
@@ -13,7 +10,7 @@ class Loading<T> extends Async<T> with LoadingMappable {
   final int listTotal;
   final bool isRefresh;
 
-  Loading({
+  Async({
     this.message = "",
     this.code = "",
     this.data,
@@ -24,36 +21,38 @@ class Loading<T> extends Async<T> with LoadingMappable {
 }
 
 @MappableClass()
-class Success<T> extends Async<T> with SuccessMappable {
-  final String message;
-  final String code;
-  final T? data;
-  final List<T>? listData;
-  final int listTotal;
+class Loading<T> extends Async<T> with LoadingMappable {
+  Loading({
+    super.message = "",
+    super.code = "",
+    super.data,
+    super.isRefresh = true,
+    super.listData,
+    super.listTotal = 0,
+  });
+}
 
+@MappableClass()
+class Success<T> extends Async<T> with SuccessMappable {
   Success({
-    this.message = "",
-    this.code = "",
-    this.data,
-    this.listData,
-    this.listTotal = 0,
+    super.message = "",
+    super.code = "",
+    super.data,
+    super.isRefresh = true,
+    super.listData,
+    super.listTotal = 0,
   });
 }
 
 @MappableClass()
 class Error<T> extends Async<T> with ErrorMappable {
-  final String message;
-  final String code;
-  final T? data;
-  final List<T>? listData;
-  final int listTotal;
-
   Error({
-    this.message = "",
-    this.code = "",
-    this.data,
-    this.listData,
-    this.listTotal = 0,
+    super.message = "",
+    super.code = "",
+    super.data,
+    super.isRefresh = true,
+    super.listData,
+    super.listTotal = 0,
   });
 }
 
