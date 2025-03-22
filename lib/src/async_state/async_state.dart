@@ -11,11 +11,13 @@ class Loading<T> extends Async<T> with LoadingMappable {
   final T? data;
   final List<T>? listData;
   final int listTotal;
+  final bool isRefresh;
 
   Loading({
     this.message = "",
     this.code = "",
     this.data,
+    this.isRefresh = true,
     this.listData,
     this.listTotal = 0,
   });
@@ -76,6 +78,7 @@ extension AsyncExtension on Async<dynamic> {
         return Loading<R>(
           data: data,
           listData: listData,
+          isRefresh: (this as Loading).isRefresh,
           message: message ?? (this as Loading).message,
           code: code ?? (this as Loading).code,
           listTotal: listTotal ?? (this as Loading).listTotal,

@@ -32,6 +32,9 @@ class LoadingMapper extends ClassMapperBase<Loading> {
   static dynamic _arg$data<T>(f) => f<T>();
   static const Field<Loading, dynamic> _f$data =
       Field('data', _$data, opt: true, arg: _arg$data);
+  static bool _$isRefresh(Loading v) => v.isRefresh;
+  static const Field<Loading, bool> _f$isRefresh =
+      Field('isRefresh', _$isRefresh, opt: true, def: true);
   static List<dynamic>? _$listData(Loading v) => v.listData;
   static dynamic _arg$listData<T>(f) => f<List<T>>();
   static const Field<Loading, List<dynamic>> _f$listData =
@@ -45,6 +48,7 @@ class LoadingMapper extends ClassMapperBase<Loading> {
     #message: _f$message,
     #code: _f$code,
     #data: _f$data,
+    #isRefresh: _f$isRefresh,
     #listData: _f$listData,
     #listTotal: _f$listTotal,
   };
@@ -54,6 +58,7 @@ class LoadingMapper extends ClassMapperBase<Loading> {
         message: data.dec(_f$message),
         code: data.dec(_f$code),
         data: data.dec(_f$data),
+        isRefresh: data.dec(_f$isRefresh),
         listData: data.dec(_f$listData),
         listTotal: data.dec(_f$listTotal));
   }
@@ -114,6 +119,7 @@ abstract class LoadingCopyWith<$R, $In extends Loading<T>, $Out, T>
       {String? message,
       String? code,
       T? data,
+      bool? isRefresh,
       List<T>? listData,
       int? listTotal});
   LoadingCopyWith<$R2, $In, $Out2, T> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -140,12 +146,14 @@ class _LoadingCopyWithImpl<$R, $Out, T>
           {String? message,
           String? code,
           Object? data = $none,
+          bool? isRefresh,
           Object? listData = $none,
           int? listTotal}) =>
       $apply(FieldCopyWithData({
         if (message != null) #message: message,
         if (code != null) #code: code,
         if (data != $none) #data: data,
+        if (isRefresh != null) #isRefresh: isRefresh,
         if (listData != $none) #listData: listData,
         if (listTotal != null) #listTotal: listTotal
       }));
@@ -154,6 +162,7 @@ class _LoadingCopyWithImpl<$R, $Out, T>
       message: data.get(#message, or: $value.message),
       code: data.get(#code, or: $value.code),
       data: data.get(#data, or: $value.data),
+      isRefresh: data.get(#isRefresh, or: $value.isRefresh),
       listData: data.get(#listData, or: $value.listData),
       listTotal: data.get(#listTotal, or: $value.listTotal));
 
