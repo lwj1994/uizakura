@@ -1,72 +1,58 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:dart_mappable/dart_mappable.dart';
 
-part 'async_state.freezed.dart';
+part 'async_state.mapper.dart';
 
-abstract class _AsyncData<T> {
-  String get message;
+sealed class Async<T> {}
 
-  String get code;
+@MappableClass()
+class Loading<T> extends Async<T> with LoadingMappable {
+  final String message;
+  final String code;
+  final T? data;
+  final List<T>? listData;
+  final int listTotal;
 
-  T? get data;
-
-  // for list
-  List<T>? get listData;
-
-  int get listTotal;
+  Loading({
+    this.message = "",
+    this.code = "",
+    this.data,
+    this.listData,
+    this.listTotal = 0,
+  });
 }
 
-@freezed
-class Async<T> with _$Async<T> {
-  @Implements.fromString('_AsyncData<T>')
-  factory Async.initializing({
-    @Default("") String message,
-    @Default("") String code,
-    @Default(0) int listTotal,
-    T? data,
-    List<T>? listData,
-  }) = Initializing;
+@MappableClass()
+class Success<T> extends Async<T> with SuccessMappable {
+  final String message;
+  final String code;
+  final T? data;
+  final List<T>? listData;
+  final int listTotal;
 
-  @Implements.fromString('_AsyncData<T>')
-  factory Async.refreshing(
-      {@Default("") String message,
-      @Default("") String code,
-      @Default(0) int listTotal,
-      List<T>? listData,
-      T? data}) = Refreshing;
+  Success({
+    this.message = "",
+    this.code = "",
+    this.data,
+    this.listData,
+    this.listTotal = 0,
+  });
+}
 
-  @Implements.fromString('_AsyncData<T>')
-  factory Async.loading(
-      {@Default("") String message,
-      @Default("") String code,
-      @Default(0) int listTotal,
-      List<T>? listData,
-      T? data}) = Loading;
+@MappableClass()
+class Error<T> extends Async<T> with ErrorMappable {
+  final String message;
+  final String code;
+  final T? data;
+  final List<T>? listData;
+  final int listTotal;
 
-  @Implements.fromString('_AsyncData<T>')
-  factory Async.success(
-      {@Default("") String message,
-      @Default("") String code,
-      @Default(0) int listTotal,
-      List<T>? listData,
-      T? data}) = Success;
-
-  @Implements.fromString('_AsyncData<T>')
-  factory Async.error({
-    @Default("") String message,
-    @Default("") String code,
-    @Default(0) int listTotal,
-    T? data,
-    List<T>? listData,
-  }) = Error;
-
-  @Implements.fromString('_AsyncData<T>')
-  factory Async.uninitialized({
-    @Default("") String message,
-    @Default("") String code,
-    @Default(0) int listTotal,
-    List<T>? listData,
-    T? data,
-  }) = Uninitialized;
+  Error({
+    this.message = "",
+    this.code = "",
+    this.data,
+    this.listData,
+    this.listTotal = 0,
+  });
 }
 
 extension AsyncExtension on Async<dynamic> {
@@ -74,35 +60,40 @@ extension AsyncExtension on Async<dynamic> {
 
   bool get isError => this is Error;
 
-  bool get isInitializing => this is Initializing;
-
   bool get isLoading => this is Loading;
-
-  bool get isRefreshingOrLoading => isLoading || isRefreshing;
-
-  bool get isRefreshing => this is Refreshing;
 
   bool get isComplete => isSuccess || isError;
 
-  Async<R> transform<R>({
+  Async<R> copyWith<R>({
     R? data,
     List<R>? listData,
     int? listTotal,
     String? code,
     String? message,
   }) {
-    return isSuccess
-        ? Async<R>.success(
-            data: data,
-            listData: listData,
-            message: message ?? this.message,
-            code: code ?? this.code,
-            listTotal: listTotal ?? this.listTotal,
-          )
-        : Async<R>.error(
-            message: message ?? this.message,
-            code: code ?? this.code,
-            listTotal: listTotal ?? this.listTotal,
-          );
+    switch (this) {
+      case Loading():
+        return Loading<R>(
+          data: data,
+          listData: listData,
+          message: message ?? (this as Loading).message,
+          code: code ?? (this as Loading).code,
+          listTotal: listTotal ?? (this as Loading).listTotal,
+        );
+      case Success():
+        return Success<R>(
+          data: data,
+          listData: listData,
+          message: message ?? (this as Success).message,
+          code: code ?? (this as Success).code,
+          listTotal: listTotal ?? (this as Success).listTotal,
+        );
+      case Error():
+        return Error<R>(
+          message: message ?? (this as Error).message,
+          code: code ?? (this as Error).code,
+          listTotal: listTotal ?? (this as Error).listTotal,
+        );
+    }
   }
 }
