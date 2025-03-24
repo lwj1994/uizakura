@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uizakura/src/view_model/view_model.dart';
 import 'package:uizakura/src/widget/on_first_frame_mixin.dart';
 import 'package:uizakura/src/widget/widget_extension.dart';
 import 'package:widget_lifecycle/widget_lifecycle.dart';
@@ -14,18 +15,18 @@ import 'overlay_page_mixin.dart';
 ///
 /// @author luwenjie on 2023/4/28 11:17:22
 
-abstract class UizakuraPage extends ConsumerStatefulWidget {
-  const UizakuraPage({super.key});
+abstract class UiaraPage extends StatefulWidget {
+  const UiaraPage({super.key});
 }
 
-abstract class UizakuraPageState<T extends UizakuraPage>
-    extends ConsumerState<T>
+abstract class UiaraPageState<T extends UiaraPage> extends State<T>
     with
         WidgetsBindingObserver,
         OnFirstFrameEndMixin<T>,
         OverLayerWidgetStateMixin<T>,
         AutoDisposeMixin<T> {
-  late final LifecycleController _lifecycleController = LifecycleController();
+  @protected
+  late final LifecycleController lifecycleController = LifecycleController();
 
   bool _showing = false;
   bool _disposed = false;
@@ -86,7 +87,7 @@ abstract class UizakuraPageState<T extends UizakuraPage>
     return LifecycleAware(
       callShowOnAppResume: true,
       callHideOnAppPause: true,
-      controller: _lifecycleController,
+      controller: lifecycleController,
       onShow: () {
         _showing = true;
         onShow();
@@ -114,46 +115,5 @@ abstract class UizakuraPageState<T extends UizakuraPage>
     _disposed = true;
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }
-}
-
-extension RiverpodStateExtension on ConsumerState {
-  Future<VM> refreshProvider<S, VM extends StateNotifier<S>>(
-    ProviderOrFamily provider,
-  ) async {
-    ref.invalidate(provider);
-    await rebuild();
-    return await postFrameCallback<VM>(() {
-      return getViewModel(provider as ProviderListenable) as VM;
-    });
-  }
-
-  VM getViewModel<S, VM extends StateNotifier<S>>(
-      ProviderListenable<S> provider) {
-    if (provider is StateNotifierProvider<VM, S>) {
-      return ref.read(provider.notifier as ProviderListenable) as VM;
-    }
-    if (provider is AutoDisposeStateNotifierProvider<VM, S>) {
-      return ref.read(provider.notifier as ProviderListenable) as VM;
-    }
-    throw Exception("unSupport provider ${provider.runtimeType} <$VM, $S>");
-  }
-
-  S getState<S>(ProviderListenable<S> provider) {
-    return ref.read(provider);
-  }
-
-  S watchState<S>(ProviderListenable<S> provider) {
-    return ref.watch(provider);
-  }
-
-  void addStateListener<S>(
-    ProviderListenable<S> provider, {
-    required void Function(S? previous, S next) listener,
-  }) {
-    return ref.listen(provider, listener,
-        onError: (Object error, StackTrace stackTrace) {
-      debugPrint("addListener error $error, $stackTrace");
-    });
   }
 }

@@ -14,7 +14,7 @@ class PickFile {
   PickFile({required this.filePath, this.mimeType = "", this.androidUri = ""});
 }
 
-class LuFilePicker {
+class UiaraFilePicker {
   static Future<Async<List<PickFile>>> pickMedia(BuildContext context,
       {bool allowMultiple = false}) async {
     try {

@@ -3,110 +3,100 @@ import 'dart:math';
 import 'package:auto_route/annotations.dart';
 import 'package:example/route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uizakura/uizakura.dart';
 
 /// @author luwenjie on 2024/7/27 23:37:23
 
 @RoutePage()
-class RiverpodPage extends UizakuraPage {
+class RiverpodPage extends UiaraPage {
   final String id;
 
   const RiverpodPage(this.id, {super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() {
+  UiaraPageState<RiverpodPage> createState() {
     return _State();
   }
 }
 
-class _State extends UizakuraPageState<RiverpodPage> {
-  late final ViewModelProvider<ViewModel, String> _provider =
-      provider(ProviderKey(
-    arg: widget.id,
-  ));
-
-  ViewModel get _viewModel => getViewModel(_provider);
-
-  String get _state => getState(_provider);
-
+class _State extends UiaraPageState<RiverpodPage> {
   @override
   void initState() {
     super.initState();
-    debugPrint("initState");
   }
+
+  ValueKey<int> _viewModelFactoryId = ValueKey(0);
 
   @override
   Widget buildPage(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        _viewModel.setId();
-      }),
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            appRouter.maybePop();
-          },
-        ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            _state,
-            style: const TextStyle(color: Colors.red),
-          ),
-          FilledButton(
-              onPressed: () async {
-                debugPrint("page._viewModel = ${_viewModel.hashCode}");
-              },
-              child: const Text("invalide not change id")),
-          FilledButton(
-              onPressed: () async {
-                refreshProvider(_provider);
-                // setState(() {
-                //
-                // });
-                // _updateViewModel();
-              },
-              child: const Text("invalide with change id")),
-          FilledButton(
+    return ViewModelFactory<MyViewModel>(
+      key: _viewModelFactoryId,
+      create: (BuildContext context) {
+        return MyViewModel("init state", "init arg");
+      },
+      child: ViewModelConsumer<MyViewModel, String>(
+        listener: (c, s) {},
+        builder: (BuildContext context, state, viewModel) {
+          return Scaffold(
+            floatingActionButton: FloatingActionButton(
               onPressed: () {
-                debugPrint("page._viewModel = ${_viewModel.hashCode}");
-                debugPrint("page.state = ${_viewModel.state}");
+                viewModel.setId();
               },
-              child: const Text("call viewmodel")),
-        ],
+              child: Icon(Icons.add),
+            ),
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  appRouter.maybePop();
+                },
+              ),
+            ),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  state,
+                  style: const TextStyle(color: Colors.red),
+                ),
+                FilledButton(
+                    onPressed: () async {
+                      _viewModelFactoryId =
+                          ValueKey(_viewModelFactoryId.value + 1);
+                      setState(() {});
+                      // refreshProvider(_provider);
+                      // setState(() {
+                      //
+                      // });
+                      // _updateViewModel();
+                    },
+                    child: const Text("invalide with change id")),
+                FilledButton(
+                    onPressed: () {
+                      debugPrint(
+                          "page._viewModel hashCode = ${viewModel.hashCode}");
+                      debugPrint("page.state = ${viewModel.state}");
+                    },
+                    child: const Text("print viewmodel")),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 }
 
-class RefreshProvider {
-  final AutoDisposeStateNotifierProvider<ViewModel, String> provider;
-  final ViewModel viewModel;
-
-  RefreshProvider(this.provider, this.viewModel);
-}
-
-final ViewModelProviderBuilder<ViewModel, String, ProviderKey<String>>
-    provider =
-    buildViewModelProvider<ViewModel, String, String>(viewModel: (v) {
-  final id = v.requireArg;
-  return ViewModel("", id);
-});
-
-class ViewModel extends UizakuraViewModel<String> {
+class MyViewModel extends ViewModel<String> {
   final String id;
 
-  ViewModel(super.state, this.id) {
-    debugPrint("create ViewModel $id $hashCode");
+  MyViewModel(super.state, this.id) {
+    debugPrint("create ViewModel state:${state} id:$id hashCode:$hashCode");
   }
 
   @override
-  void dispose() {
-    super.dispose();
+  Future<void> close() async {
+    super.close();
     debugPrint("dispose ViewModel $id $hashCode");
   }
 

@@ -1,26 +1,25 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_displaymode/flutter_displaymode.dart';
-
-import 'uizakura.dart';
-
-export "src/async_state/async_state.dart";
+// pge
 export "src/page/auto_dispose_mixin.dart";
 export "src/page/base_page.dart";
 export "src/page/overlay_page_mixin.dart";
 export 'src/page/paging.dart';
-export "src/page/view_model.dart";
 // util
+export "src/util/async_state.dart";
 export "src/util/color.dart";
-export "src/util/date.dart";
 export "src/util/encrypt.dart";
 export "src/util/env.dart";
 export "src/util/event_bus.dart";
 export "src/util/file.dart";
 export "src/util/file_picker.dart";
+export "src/util/high_refresh_rate.dart";
 export "src/util/list_extension.dart";
 export "src/util/log.dart";
-export "src/util/screen_size.dart";
 export "src/util/string_extension.dart";
+// view model
+export "src/view_model/consumer.dart";
+export "src/view_model/view_model.dart";
+export "src/view_model/view_model_factory.dart";
+// widget
 export "src/widget/after_layout.dart";
 export "src/widget/click.dart";
 export "src/widget/dropdown_overlay.dart";
@@ -36,21 +35,3 @@ export "src/widget/scroll_extension.dart";
 export "src/widget/snackbar/widget.dart";
 export 'src/widget/toast.dart';
 export 'src/widget/widget_extension.dart';
-
-Future<void> initialize() async {
-  await UizakuraAppEnv.initialize();
-  await _setHighRate();
-}
-
-Future<void> initializeWithContext(BuildContext context) async {
-  await Toast.initialize(context);
-}
-
-// 适配 coloros 等系统高刷，默认帧率很低
-Future<void> _setHighRate() async {
-  try {
-    await FlutterDisplayMode.setHighRefreshRate();
-  } catch (e) {
-    debugPrint("$e");
-  }
-}

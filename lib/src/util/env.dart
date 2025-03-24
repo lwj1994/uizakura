@@ -5,7 +5,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 /// @author luwenjie on 2023/9/14 22:47:54
 
-class UizakuraAppEnv {
+class UiaraAppEnv {
   static String _version = "";
   static String _buildCode = "";
   static int utcDeltaSeconds = 0;
@@ -15,10 +15,13 @@ class UizakuraAppEnv {
   static String get buildCode => _buildCode;
 
   static Future<void> initialize() async {
-    await PackageInfo.fromPlatform().then((value) {
-      _version = value.version;
-      _buildCode = value.buildNumber;
-    });
+    while (_version.isEmpty || _buildCode.isEmpty) {
+      await PackageInfo.fromPlatform().then((value) {
+        _version = value.version;
+        _buildCode = value.buildNumber;
+      });
+      await Future.delayed(Duration(milliseconds: 100));
+    }
   }
 
   static get isDebug => kDebugMode;

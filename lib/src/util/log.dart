@@ -9,7 +9,7 @@ class Logger {
   static void clear() {}
 
   static Future<void> print(String tag, String s) async {
-    if (UizakuraAppEnv.isDebug) {
+    if (UiaraAppEnv.isDebug) {
       debugLogger.d(
           "\n$tag:-------------------------\n$s\n-------------------------\n");
     }
@@ -24,6 +24,6 @@ final debugLogger = loggerlib.Logger(
 class _DevelopmentFilter extends loggerlib.LogFilter {
   @override
   bool shouldLog(loggerlib.LogEvent event) {
-    return UizakuraAppEnv.isDebug;
+    return UiaraAppEnv.isDebug;
   }
 }

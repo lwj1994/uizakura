@@ -2,17 +2,10 @@ import 'package:flutter/material.dart';
 
 /// @author luwenjie on 2023/10/3 16:48:39
 ///
-class UizakuraColorUtil {
-  static Color inverseColor(Color color) {
-    return Color.fromARGB(
-      color.alpha,
-      255 - color.red,
-      255 - color.green,
-      255 - color.blue,
-    );
-  }
 
-  static Color parseColor(String value) {
+extension ColorExtension on String {
+  Color get color {
+    final value = this;
     try {
       int colorValue = 0;
       if (value.startsWith('#')) {
@@ -27,8 +20,4 @@ class UizakuraColorUtil {
       return Colors.transparent;
     }
   }
-}
-
-extension ColorExtension on Color {
-  Color get inverse => UizakuraColorUtil.inverseColor(this);
 }
