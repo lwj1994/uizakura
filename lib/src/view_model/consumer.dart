@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'view_model.dart';
 
-class ViewModelConsumer<VM extends ViewModel<S>, S> extends StatelessWidget {
+class StateWatcher<VM extends ViewModel<S>, S> extends StatelessWidget {
   final Widget Function(
     BuildContext context,
     S state,
@@ -12,17 +12,15 @@ class ViewModelConsumer<VM extends ViewModel<S>, S> extends StatelessWidget {
   ) builder;
   final Function(BuildContext context, S state)? listener;
 
-  const ViewModelConsumer({super.key, required this.builder, this.listener});
+  const StateWatcher({super.key, required this.builder, this.listener});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<VM, S>(builder: (c, s) {
-      try {
-        final vm = c.read<VM>();
-        return builder.call(c, s, vm);
-      } catch (e) {
-        throw Exception("can't find viewModel <$VM, $S>\n$e");
-      }
+    return BlocConsumer<VM, S>(builder: (
+      BuildContext context,
+      S state,
+    ) {
+      return builder(context, state, context.read<VM>());
     }, buildWhen: (S previous, S current) {
       return previous != current;
     }, listenWhen: (S previous, S current) {

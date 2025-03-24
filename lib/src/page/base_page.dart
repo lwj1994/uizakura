@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uizakura/src/view_model/view_model.dart';
 import 'package:uizakura/src/widget/on_first_frame_mixin.dart';
 import 'package:uizakura/src/widget/widget_extension.dart';
 import 'package:widget_lifecycle/widget_lifecycle.dart';
@@ -31,7 +29,7 @@ abstract class UiaraPageState<T extends UiaraPage> extends State<T>
   bool _showing = false;
   bool _disposed = false;
 
-  bool get isDisposed => _disposed || !isMounted;
+  bool get isDisposed => _disposed || !mounted;
 
   bool get isShowing => _showing;
 
@@ -47,10 +45,9 @@ abstract class UiaraPageState<T extends UiaraPage> extends State<T>
     invalidate();
   }
 
-  Future<void> invalidate([FutureOr Function()? fn]) async {
+  Future<void> invalidate() async {
     if (isDisposed) return;
-    await fn?.call();
-    rebuild();
+    await setStateWhenEndOfFrame();
   }
 
   FutureOr<void> onFirstShowing(BuildContext context) {}
@@ -61,7 +58,9 @@ abstract class UiaraPageState<T extends UiaraPage> extends State<T>
   FutureOr<void> onFirstFrameEnd(BuildContext context) async {
     _showing = true;
     if (!isDisposed) await super.onFirstFrameEnd(context);
-    if (!isDisposed) await onFirstShowing(context);
+    if (context.mounted) {
+      if (!isDisposed) await onFirstShowing(context);
+    }
   }
 
   @override

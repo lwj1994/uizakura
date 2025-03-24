@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:auto_route/annotations.dart';
+import 'package:example/main.dart';
 import 'package:example/route.dart';
 import 'package:flutter/material.dart';
 import 'package:uizakura/uizakura.dart';
@@ -34,55 +35,59 @@ class _State extends UiaraPageState<RiverpodPage> {
       create: (BuildContext context) {
         return MyViewModel("init state", "init arg");
       },
-      child: ViewModelConsumer<MyViewModel, String>(
-        listener: (c, s) {},
-        builder: (BuildContext context, state, viewModel) {
-          return Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                viewModel.setId();
-              },
-              child: Icon(Icons.add),
-            ),
-            appBar: AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
+      child: StateWatcher<MainViewModel, String>(builder: (context, s, vm) {
+        print("RiverpodPage MainViewModel ${s}");
+        return StateWatcher<MyViewModel, String>(
+          listener: (c, s) {},
+          builder: (BuildContext context, state, vm) {
+            final viewModel = vm;
+            return Scaffold(
+              floatingActionButton: FloatingActionButton(
                 onPressed: () {
-                  appRouter.maybePop();
+                  viewModel.setId();
                 },
+                child: Icon(Icons.add),
               ),
-            ),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  state,
-                  style: const TextStyle(color: Colors.red),
+              appBar: AppBar(
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    appRouter.maybePop();
+                  },
                 ),
-                FilledButton(
-                    onPressed: () async {
-                      _viewModelFactoryId =
-                          ValueKey(_viewModelFactoryId.value + 1);
-                      setState(() {});
-                      // refreshProvider(_provider);
-                      // setState(() {
-                      //
-                      // });
-                      // _updateViewModel();
-                    },
-                    child: const Text("invalide with change id")),
-                FilledButton(
-                    onPressed: () {
-                      debugPrint(
-                          "page._viewModel hashCode = ${viewModel.hashCode}");
-                      debugPrint("page.state = ${viewModel.state}");
-                    },
-                    child: const Text("print viewmodel")),
-              ],
-            ),
-          );
-        },
-      ),
+              ),
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    state,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                  FilledButton(
+                      onPressed: () async {
+                        _viewModelFactoryId =
+                            ValueKey(_viewModelFactoryId.value + 1);
+                        setState(() {});
+                        // refreshProvider(_provider);
+                        // setState(() {
+                        //
+                        // });
+                        // _updateViewModel();
+                      },
+                      child: const Text("invalide with change id")),
+                  FilledButton(
+                      onPressed: () {
+                        debugPrint(
+                            "page._viewModel hashCode = ${viewModel.hashCode}");
+                        debugPrint("page.state = ${viewModel.state}");
+                      },
+                      child: const Text("print viewmodel")),
+                ],
+              ),
+            );
+          },
+        );
+      }),
     );
   }
 }

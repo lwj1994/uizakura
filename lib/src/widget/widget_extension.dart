@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:gap/gap.dart';
 
 /// @author luwenjie on 2023/10/10 11:50:23
 
-extension GlobalKeyExtenstion on GlobalKey {
+extension GlobalKeyExtension on GlobalKey {
   RenderBox get renderBox => currentContext?.findRenderObject() as RenderBox;
 
   Offset get globalOffset => renderBox.localToGlobal(
@@ -14,13 +13,8 @@ extension GlobalKeyExtenstion on GlobalKey {
       );
 }
 
-extension GapExtension on num {
-  Gap get gap {
-    return Gap(toDouble());
-  }
-}
-
-extension ContextExtenstion on BuildContext {
+extension ContextExtension on BuildContext {
+  /// 通过 localToGlobal 测量值判断页面是否可见。
   bool get isShowing {
     RenderObject? renderObject = findRenderObject();
     if (renderObject != null && renderObject.attached) {
@@ -34,25 +28,30 @@ extension ContextExtenstion on BuildContext {
     return false;
   }
 
-  Size get screenSize => MediaQuery.of(this).size;
-
-  double get screenWidth => MediaQuery.of(this).size.width;
+  Size get screenSize => MediaQuery.maybeSizeOf(this) ?? Size(375, 1920);
 
   // 会随着键盘弹起变化
-  EdgeInsets get padding => MediaQuery.of(this).padding;
+  EdgeInsets get padding => MediaQuery.maybePaddingOf(this) ?? EdgeInsets.zero;
 
-  EdgeInsets get viewPadding => MediaQuery.of(this).viewPadding;
+  EdgeInsets get viewPadding =>
+      MediaQuery.maybeViewPaddingOf(this) ?? EdgeInsets.zero;
 
-  EdgeInsets get viewInsets => MediaQuery.of(this).viewInsets;
+  EdgeInsets get viewInsets =>
+      MediaQuery.maybeViewInsetsOf(this) ?? EdgeInsets.zero;
 
-  double get screenHeight => MediaQuery.of(this).size.height;
+  double get screenWidth => screenSize.width;
 
-  double get statusBarHeight => MediaQuery.of(this).viewPadding.top;
+  double get screenHeight => screenSize.height;
 
-  double get navigationBarHeight => MediaQuery.of(this).viewPadding.bottom;
+  double get statusBarHeight => viewPadding.top;
+
+  double get navigationBarHeight => viewPadding.bottom;
+
+  double get devicePixelRatio =>
+      MediaQuery.maybeDevicePixelRatioOf(this) ?? 1.0;
 }
 
-extension SliverExtenstion on Widget {
+extension SliverExtension on Widget {
   SliverToBoxAdapter get sliverBox {
     return SliverToBoxAdapter(
       child: this,
@@ -60,16 +59,9 @@ extension SliverExtenstion on Widget {
   }
 }
 
-extension WidgetStateExtenstion on State<dynamic> {
-  bool get isMounted {
-    try {
-      return context.mounted;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<void> rebuild() async {
+extension WidgetStateExtension on State<dynamic> {
+  /// 等待当前帧结束再触发 setState
+  Future<void> setStateWhenEndOfFrame() async {
     if (!mounted) return;
     if (SchedulerBinding.instance.schedulerPhase != SchedulerPhase.idle) {
       await SchedulerBinding.instance.endOfFrame;
@@ -79,10 +71,12 @@ extension WidgetStateExtenstion on State<dynamic> {
     setState(() {});
   }
 
-  Future<T> postFrameCallback<T>(T Function() thenCallback) {
+  Future<T> postFrameCallback<T>(FutureOr<T> Function() thenCallback) {
     final Completer<T> completer = Completer();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      completer.complete(thenCallback.call());
+      if (!completer.isCompleted) {
+        completer.complete(thenCallback.call());
+      }
     });
     return completer.future;
   }
