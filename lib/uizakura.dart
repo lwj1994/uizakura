@@ -15,6 +15,7 @@ export "src/util/high_refresh_rate.dart";
 export "src/util/list_extension.dart";
 export "src/util/log.dart";
 export "src/util/string_extension.dart";
+export "src/util/widget.dart";
 // view model
 export "src/view_model/consumer.dart";
 export "src/view_model/view_model.dart";
