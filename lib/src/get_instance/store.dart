@@ -16,6 +16,7 @@ class Store<T> {
         case InstanceAction.recycle:
           instanceManager.debugLog("remove $T ${notifier.key}");
           _instances.remove(notifier.key);
+          _watchers.remove(notifier.key);
           break;
       }
     });

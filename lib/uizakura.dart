@@ -1,7 +1,6 @@
 export "src/get_instance/auto_dispose.dart";
 export "src/get_instance/manager.dart";
 export "src/get_instance/store.dart";
-export "src/get_instance/widget_state.dart";
 export "src/page/auto_dispose_mixin.dart";
 export "src/page/base_page.dart";
 export "src/page/overlay_page_mixin.dart";
