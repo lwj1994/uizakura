@@ -17,42 +17,37 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ViewModelFactory<MainViewModel>(
-      create: (BuildContext context) {
-        return MainViewModel("MyApp");
-      },
-      child: MaterialApp.router(
-        routerDelegate: appRouter.delegate(navigatorObservers: () {
-          return [];
-        }),
-        routeInformationParser: appRouter.defaultRouteParser(),
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // TRY THIS: Try running your application with "flutter run". You'll see
-          // the application has a purple toolbar. Then, without quitting the app,
-          // try changing the seedColor in the colorScheme below to Colors.green
-          // and then invoke "hot reload" (save your changes or press the "hot
-          // reload" button in a Flutter-supported IDE, or press "r" if you used
-          // the command line to start the app).
-          //
-          // Notice that the counter didn't reset back to zero; the application
-          // state is not lost during the reload. To reset the state, use hot
-          // restart instead.
-          //
-          // This works for code too, not just values: Most code changes can be
-          // tested with just a hot reload.
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
+    return MaterialApp.router(
+      routerDelegate: appRouter.delegate(navigatorObservers: () {
+        return [];
+      }),
+      routeInformationParser: appRouter.defaultRouteParser(),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // TRY THIS: Try running your application with "flutter run". You'll see
+        // the application has a purple toolbar. Then, without quitting the app,
+        // try changing the seedColor in the colorScheme below to Colors.green
+        // and then invoke "hot reload" (save your changes or press the "hot
+        // reload" button in a Flutter-supported IDE, or press "r" if you used
+        // the command line to start the app).
+        //
+        // Notice that the counter didn't reset back to zero; the application
+        // state is not lost during the reload. To reset the state, use hot
+        // restart instead.
+        //
+        // This works for code too, not just values: Most code changes can be
+        // tested with just a hot reload.
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
     );
   }
 }
 
 @RoutePage()
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends UiaraPage {
   const MyHomePage({super.key});
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -65,43 +60,45 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  UiaraPageState<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends UiaraPageState<MyHomePage> {
+  late final _viewModel = getViewModel<MainViewModel>(
+      key: "share",
+      factory: () {
+        return MainViewModel(state: "xx");
+      });
+
   @override
-  Widget build(BuildContext context) {
-    return StateWatcher<MainViewModel, String>(builder: (context, s, vm) {
-      print("_MyHomePageState MainViewModel update ${s}");
-      return Scaffold(
-        appBar: AppBar(),
-        body: Column(
-          children: [
-            FilledButton(
-                onPressed: () {
-                  appRouter.push(
-                      RiverpodRoute(id: Random().nextInt(1000).toString()));
-                },
-                child: const Text("push random id")),
-            FilledButton(
-                onPressed: () {
-                  appRouter.push(RiverpodRoute(id: "1"));
-                },
-                child: const Text("push 1")),
-          ],
-        ),
-      );
-    });
+  Widget buildPage(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        children: [
+          Text(_viewModel.state),
+          FilledButton(
+              onPressed: () {
+                appRouter
+                    .push(RiverpodRoute(id: Random().nextInt(1000).toString()));
+              },
+              child: const Text("push random id")),
+          FilledButton(
+              onPressed: () {
+                appRouter.push(RiverpodRoute(id: "1"));
+              },
+              child: const Text("push 1")),
+        ],
+      ),
+    );
   }
 }
 
 class MainViewModel extends ViewModel<String> {
-  MainViewModel(super.state) {
-    print("MainViewModel create : ${this.hashCode}");
+  MainViewModel({required super.state}) {
+    print("MainViewModel create : $hashCode");
     final t = Timer.periodic(Duration(seconds: 3), (t) {
-      update((s) {
-        return "update ${t.tick}";
-      });
+      setState("update ${t.tick}");
     });
     addDispose(t.cancel);
   }

@@ -21,73 +21,59 @@ class RiverpodPage extends UiaraPage {
 }
 
 class _State extends UiaraPageState<RiverpodPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   ValueKey<int> _viewModelFactoryId = ValueKey(0);
+  late MyViewModel viewModel = getViewModel<MyViewModel>(factory: () {
+    return MyViewModel(state: 'state', id: 'id');
+  });
+
+  late MainViewModel mainViewModel = getViewModel<MainViewModel>(key: "share");
+
+  String get state => viewModel.state;
 
   @override
   Widget buildPage(BuildContext context) {
-    return ViewModelFactory<MyViewModel>(
-      key: _viewModelFactoryId,
-      create: (BuildContext context) {
-        return MyViewModel("init state", "init arg");
-      },
-      child: StateWatcher<MainViewModel, String>(builder: (context, s, vm) {
-        print("RiverpodPage MainViewModel ${s}");
-        return StateWatcher<MyViewModel, String>(
-          listener: (c, s) {},
-          builder: (BuildContext context, state, vm) {
-            final viewModel = vm;
-            return Scaffold(
-              floatingActionButton: FloatingActionButton(
-                onPressed: () {
-                  viewModel.setId();
-                },
-                child: Icon(Icons.add),
-              ),
-              appBar: AppBar(
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    appRouter.maybePop();
-                  },
-                ),
-              ),
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    state,
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                  FilledButton(
-                      onPressed: () async {
-                        _viewModelFactoryId =
-                            ValueKey(_viewModelFactoryId.value + 1);
-                        setState(() {});
-                        // refreshProvider(_provider);
-                        // setState(() {
-                        //
-                        // });
-                        // _updateViewModel();
-                      },
-                      child: const Text("invalide with change id")),
-                  FilledButton(
-                      onPressed: () {
-                        debugPrint(
-                            "page._viewModel hashCode = ${viewModel.hashCode}");
-                        debugPrint("page.state = ${viewModel.state}");
-                      },
-                      child: const Text("print viewmodel")),
-                ],
-              ),
-            );
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          viewModel.setId();
+        },
+        child: Icon(Icons.add),
+      ),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            appRouter.maybePop();
           },
-        );
-      }),
+        ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("mainViewModel.state = ${mainViewModel.state}"),
+          Text(
+            state,
+            style: const TextStyle(color: Colors.red),
+          ),
+          FilledButton(
+              onPressed: () async {
+                _viewModelFactoryId = ValueKey(_viewModelFactoryId.value + 1);
+                setState(() {});
+                // refreshProvider(_provider);
+                // setState(() {
+                //
+                // });
+                // _updateViewModel();
+              },
+              child: const Text("invalide with change id")),
+          FilledButton(
+              onPressed: () {
+                debugPrint("page._viewModel hashCode = ${viewModel.hashCode}");
+                debugPrint("page.state = ${viewModel.state}");
+              },
+              child: const Text("print viewmodel")),
+        ],
+      ),
     );
   }
 }
@@ -95,17 +81,20 @@ class _State extends UiaraPageState<RiverpodPage> {
 class MyViewModel extends ViewModel<String> {
   final String id;
 
-  MyViewModel(super.state, this.id) {
-    debugPrint("create ViewModel state:${state} id:$id hashCode:$hashCode");
+  MyViewModel({
+    required super.state,
+    required this.id,
+  }) {
+    debugPrint("create ViewModel state:$state id:$id hashCode:$hashCode");
   }
 
   @override
-  Future<void> close() async {
-    super.close();
+  void dispose() async {
+    super.dispose();
     debugPrint("dispose ViewModel $id $hashCode");
   }
 
   void setId() {
-    update((s) => Random().nextInt(200).toString());
+    setState(Random().nextInt(200).toString());
   }
 }

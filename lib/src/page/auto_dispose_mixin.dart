@@ -1,25 +1,20 @@
 import 'package:flutter/cupertino.dart';
+import 'package:uizakura/src/util/auto_dispose_controller.dart';
 
 /// @author luwenjie on 2024/2/28 23:04:09
 
-mixin AutoDisposeMixin<T extends StatefulWidget> on State<T> {
-  final _disposeSet = <Function()?>[];
+mixin AutoDisposeStateMixin<T extends StatefulWidget> on State<T> {
+  final _controller = AutoDisposeController();
 
   @protected
   void addDispose(Function() block) async {
-    _disposeSet.add(block);
+    _controller.addDispose(block);
   }
 
   @override
   @mustCallSuper
   void dispose() {
-    for (var element in _disposeSet) {
-      try {
-        element?.call();
-      } catch (e) {
-        debugPrint("AutoDisposeMixin error on $e");
-      }
-    }
+    _controller.dispose();
     super.dispose();
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
+import 'package:uizakura/src/view_model/extension.dart';
 import 'package:uizakura/src/widget/on_first_frame_mixin.dart';
 import 'package:uizakura/src/widget/widget_extension.dart';
 import 'package:widget_lifecycle/widget_lifecycle.dart';
@@ -22,7 +23,8 @@ abstract class UiaraPageState<T extends UiaraPage> extends State<T>
         WidgetsBindingObserver,
         OnFirstFrameEndMixin<T>,
         OverLayerWidgetStateMixin<T>,
-        AutoDisposeMixin<T> {
+        AutoDisposeStateMixin<T>,
+        ViewModelStateMixin<T> {
   @protected
   late final LifecycleController lifecycleController = LifecycleController();
 

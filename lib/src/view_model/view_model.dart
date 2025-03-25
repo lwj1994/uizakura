@@ -1,63 +1,60 @@
-import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
+// @author luwenjie on 2025/3/25 17:00:38
 
-/// @author luwenjie on 2023/4/22 18:26:16
-/// ViewMode base on Cubit
-abstract class ViewModel<T> extends Cubit<T> {
-  /// cache previous state size
-  final int cacheLimit;
-  final _disposeSet = <Function?>[];
-  bool _disposed = false;
-  final List<T> _caches = [];
+import 'package:flutter/cupertino.dart';
+import 'package:uizakura/src/util/auto_dispose_controller.dart';
 
-  get disposed => _disposed;
-
-  ViewModel(
-    super.state, {
-    this.cacheLimit = 1,
-  });
+class ViewModel<T> with ChangeNotifier {
+  final _states = List<T>.empty(growable: true);
+  final _autoDisposeController = AutoDisposeController();
 
   @protected
-  void update(T Function(T state) cb) {
-    if (_disposed) return;
-    final newState = cb.call(state);
-    if (state == newState) return;
-
-    if (_caches.length == cacheLimit) {
-      _caches.removeAt(0);
-    }
-    _caches.add(state);
-
-    try {
-      emit(newState);
-    } catch (e) {
-      //
-      debugPrint("update state error ${T}, $e");
-    }
+  void addDispose(Function() block) async {
+    _autoDisposeController.addDispose(block);
   }
 
-  T get previousState {
-    return _caches.last;
+  final cacheLimit = 1;
+
+  bool _isDisposed = false;
+
+  bool get isDisposed => _isDisposed;
+
+  ViewModel({required T state}) {
+    _addState(state);
   }
 
-  @protected
-  void addDispose(Function() block) {
-    _disposeSet.add(block);
+  void setState(T state) {
+    if (_isDisposed) {
+      return;
+    }
+    if (state == this.state) {
+      return;
+    }
+    _addState(state);
+    notifyListeners();
+  }
+
+  void _addState(T state) {
+    if (_states.length == cacheLimit) {
+      _states.removeAt(0);
+    }
+    _states.add(state);
+  }
+
+  T? get previousState {
+    if (_states.length == 1) {
+      return null;
+    }
+    return _states[_states.length - 1];
+  }
+
+  T get state {
+    return _states.last;
   }
 
   @override
-  @mustCallSuper
-  @protected
-  Future<void> close() async {
-    super.close();
-    _caches.clear();
-    _disposed = true;
-    try {
-      for (var element in _disposeSet) {
-        element?.call();
-      }
-    } catch (e) {
-      //
-    }
+  void dispose() {
+    _isDisposed = true;
+    _autoDisposeController.dispose();
+    super.dispose();
   }
 }

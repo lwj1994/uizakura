@@ -41,8 +41,7 @@ dependencies:
   intl: ">=0.20.2"
   logger: ">=2.5.0"
   dart_mappable:
-  flutter_bloc:
-  bloc:
+  uuid: ^4.5.1
 
 
 

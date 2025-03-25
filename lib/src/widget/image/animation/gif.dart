@@ -4,8 +4,7 @@
 ///
 /// A package provides an easy way to manage Gifs with animation controllers
 ///
-
-library gif;
+library;
 
 import 'dart:ui';
 
