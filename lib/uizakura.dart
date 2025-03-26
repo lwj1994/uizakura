@@ -1,6 +1,3 @@
-export "src/get_instance/auto_dispose.dart";
-export "src/get_instance/manager.dart";
-export "src/get_instance/store.dart";
 export "src/page/auto_dispose_mixin.dart";
 export "src/page/base_page.dart";
 export "src/page/overlay_page_mixin.dart";
@@ -16,8 +13,6 @@ export "src/util/list_extension.dart";
 export "src/util/log.dart";
 export 'src/util/paging.dart';
 export "src/util/string_extension.dart";
-export "src/view_model/extension.dart";
-export "src/view_model/view_model.dart";
 export "src/widget/after_layout.dart";
 export "src/widget/click.dart";
 export "src/widget/dropdown_overlay.dart";

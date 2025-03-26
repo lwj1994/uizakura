@@ -22,11 +22,12 @@ class RiverpodPage extends UiaraPage {
 
 class _State extends UiaraPageState<RiverpodPage> {
   ValueKey<int> _viewModelFactoryId = ValueKey(0);
-  late MyViewModel viewModel = getViewModel<MyViewModel>(factory: () {
-    return MyViewModel(state: 'state', id: 'id');
-  });
+  late MyViewModel viewModel = getViewModel<MyViewModel>(
+    factory: MyViewModelFactory(),
+  );
 
-  late MainViewModel mainViewModel = getViewModel<MainViewModel>(key: "share");
+  late MainViewModel mainViewModel =
+      getViewModel<MainViewModel>(factory: MainViewModelFactory());
 
   String get state => viewModel.state;
 
@@ -78,7 +79,14 @@ class _State extends UiaraPageState<RiverpodPage> {
   }
 }
 
-class MyViewModel extends ViewModel<String> {
+class MyViewModelFactory extends UiaraViewModelFactory<MyViewModel> {
+  @override
+  MyViewModel build() {
+    return MyViewModel(state: 'state', id: 'id');
+  }
+}
+
+class MyViewModel extends UiaraViewModel<String> {
   final String id;
 
   MyViewModel({
@@ -95,6 +103,6 @@ class MyViewModel extends ViewModel<String> {
   }
 
   void setId() {
-    setState(Random().nextInt(200).toString());
+    setState((s) => Random().nextInt(200).toString());
   }
 }

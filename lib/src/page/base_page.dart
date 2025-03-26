@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:uizakura/src/view_model/extension.dart';
 import 'package:uizakura/src/widget/on_first_frame_mixin.dart';
 import 'package:uizakura/src/widget/widget_extension.dart';
+import 'package:view_model/view_model.dart';
 import 'package:widget_lifecycle/widget_lifecycle.dart';
 
 import 'auto_dispose_mixin.dart';
@@ -117,4 +117,13 @@ abstract class UiaraPageState<T extends UiaraPage> extends State<T>
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+}
+
+abstract class UiaraViewModel<T> extends ViewModel<T> {
+  UiaraViewModel({required super.state});
+}
+
+abstract class UiaraViewModelFactory<T> with ViewModelFactory<T> {
+  @override
+  T build();
 }

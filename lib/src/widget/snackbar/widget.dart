@@ -3,7 +3,7 @@ import 'package:uizakura/src/widget/overlay/anim.dart';
 import 'package:uizakura/src/widget/overlay/widget.dart';
 import 'package:uizakura/src/widget/widget_extension.dart';
 
-class EchoSnackBar extends StatelessWidget {
+class UiaraSnackBar extends StatelessWidget {
   final Widget snackBar;
   final Widget child;
   final EdgeInsetsGeometry? padding;
@@ -12,7 +12,7 @@ class EchoSnackBar extends StatelessWidget {
   final ValueNotifier<bool>? visibleNotifier;
   final OverLayController? controller;
 
-  const EchoSnackBar({
+  const UiaraSnackBar({
     super.key,
     required this.snackBar,
     required this.child,
