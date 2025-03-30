@@ -4,15 +4,9 @@ import 'package:visibility_detector/visibility_detector.dart';
 /// @author luwenjie on 2023/12/16 22:55:11
 ///
 /// [hasMore] has more data in list
-/// when visibleFraction > 0 , [onLoad] will called many times, so you should
-/// avoid repeated requests.
-///
-/// if(request.isLoading){
-///   return;
-/// }
 ///
 class LoadMore extends StatefulWidget {
-  final Function? onLoad;
+  final Function()? onLoad;
   final bool hasMore;
   final WidgetBuilder? noMoreWidget;
   final WidgetBuilder? child;
@@ -33,6 +27,7 @@ class LoadMore extends StatefulWidget {
 
 class _LoadMore extends State<LoadMore> {
   late ValueKey<String> _key;
+  bool _hidden = true;
 
   @override
   void initState() {
@@ -49,6 +44,7 @@ class _LoadMore extends State<LoadMore> {
   }
 
   void _refreshKey() {
+    _hidden = true;
     _key = ValueKey(DateTime.now().millisecondsSinceEpoch.toString());
   }
 
@@ -72,8 +68,14 @@ class _LoadMore extends State<LoadMore> {
               ? widget.noMoreWidget?.call(context) ?? const SizedBox.shrink()
               : loading,
           onVisibilityChanged: (VisibilityInfo info) {
-            if (info.visibleFraction > 0 && widget.hasMore) {
-              widget.onLoad?.call();
+            if (!widget.hasMore) return;
+            if (info.visibleFraction > 0) {
+              if (_hidden) {
+                _hidden = false;
+                widget.onLoad?.call();
+              }
+            } else {
+              _hidden = true;
             }
           }),
     );
