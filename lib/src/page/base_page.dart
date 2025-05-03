@@ -119,7 +119,7 @@ abstract class UiaraPageState<T extends UiaraPage> extends State<T>
   }
 }
 
-abstract class UiaraViewModel<T> extends ViewModel<T> {
+abstract class UiaraViewModel<T> extends StateViewModel<T> {
   UiaraViewModel({required super.state});
 }
 

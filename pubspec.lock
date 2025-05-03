@@ -600,14 +600,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.1"
-  logger:
-    dependency: "direct main"
-    description:
-      name: logger
-      sha256: be4b23575aac7ebf01f225a241eb7f6b5641eeaf43c6a8613510fc2f8cf187d1
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.5.0"
   logging:
     dependency: transitive
     description:
@@ -984,12 +976,11 @@ packages:
   view_model:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "0.0.1"
-      resolved-ref: "5dd605a7fbd43d95e68d161e2bd48dc657d25725"
-      url: "https://github.com/lwj1994/flutter_view_model"
-    source: git
-    version: "0.0.1"
+      name: view_model
+      sha256: beb8a8ffc4e616100753580b9382589802c8b0509477be345afd80c30a55f042
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0-dev.4"
   visibility_detector:
     dependency: "direct main"
     description:

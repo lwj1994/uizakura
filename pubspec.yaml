@@ -41,10 +41,7 @@ dependencies:
   intl: ">=0.20.2"
   dart_mappable:
   uuid: ^4.5.1
-  view_model:
-    git:
-      url: https://github.com/lwj1994/flutter_view_model
-      ref: 0.0.1
+  view_model: ^0.4.0-dev.4
 
 
 

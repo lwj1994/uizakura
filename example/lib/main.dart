@@ -64,8 +64,8 @@ class MyHomePage extends UiaraPage {
 }
 
 class _MyHomePageState extends UiaraPageState<MyHomePage> {
-  late final _viewModel =
-      getViewModel<MainViewModel>(factory: MainViewModelFactory());
+  late final MainViewModel _viewModel =
+      watchViewModel<MainViewModel>(factory: MainViewModelFactory());
 
   @override
   Widget buildPage(BuildContext context) {
@@ -107,7 +107,7 @@ class MainViewModel extends UiaraViewModel<String> {
   MainViewModel({required super.state}) {
     print("MainViewModel create : $hashCode");
     final t = Timer.periodic(Duration(seconds: 3), (t) {
-      setState((s) => "update ${t.tick}");
+      setState("update ${t.tick}");
     });
     addDispose(t.cancel);
   }
