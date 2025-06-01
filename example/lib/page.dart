@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:auto_route/annotations.dart';
@@ -30,6 +31,42 @@ class _State extends UiaraPageState<RiverpodPage> {
       watchViewModel<MainViewModel>(factory: MainViewModelFactory());
 
   String get state => viewModel.state;
+
+  @override
+  void initState() {
+    super.initState();
+    setLoadingOverlayBuilder((c, state) {
+      return Container(
+        width: context.screenWidth,
+        height: context.screenHeight,
+        alignment: Alignment.center,
+        child: Container(
+          color: const Color(0x80000000),
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  value: state.value,
+                ),
+              ),
+              if (state.text.isNotEmpty) ...[
+                SizedBox(height: 6),
+                Text(state.text),
+              ]
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
+  @override
+  FutureOr<void> onFirstShowing(BuildContext context) {}
 
   @override
   Widget buildPage(BuildContext context) {
@@ -69,10 +106,12 @@ class _State extends UiaraPageState<RiverpodPage> {
               child: const Text("invalide with change id")),
           FilledButton(
               onPressed: () {
-                debugPrint("page._viewModel hashCode = ${viewModel.hashCode}");
-                debugPrint("page.state = ${viewModel.state}");
+                showLoadingOverlay(LoadingOverlayState(text: "加载中"));
+                Future.delayed(const Duration(seconds: 2), () {
+                  hideLoadingOverlay();
+                });
               },
-              child: const Text("print viewmodel")),
+              child: const Text("loading")),
         ],
       ),
     );

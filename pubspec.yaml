@@ -41,7 +41,12 @@ dependencies:
   intl: ">=0.20.2"
   dart_mappable:
   uuid: ^4.5.1
-  view_model: ^0.4.0-dev.4
+  view_model: ^0.4.2
+  data_class_annotation:
+    git:
+      url: https://github.com/lwj1994/dart_data_class_gen
+      ref: main
+      path: annotation
 
 
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
+import 'package:uizakura/src/widget/loading/loading_overlay.dart';
 import 'package:uizakura/src/widget/on_first_frame_mixin.dart';
 import 'package:uizakura/src/widget/widget_extension.dart';
 import 'package:view_model/view_model.dart';
@@ -24,7 +25,8 @@ abstract class UiaraPageState<T extends UiaraPage> extends State<T>
         OnFirstFrameEndMixin<T>,
         OverLayerWidgetStateMixin<T>,
         AutoDisposeStateMixin<T>,
-        ViewModelStateMixin<T> {
+        ViewModelStateMixin<T>,
+        LoadingOverlayStateMixin {
   @protected
   late final LifecycleController lifecycleController = LifecycleController();
 
@@ -38,6 +40,7 @@ abstract class UiaraPageState<T extends UiaraPage> extends State<T>
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addObserver(this);
   }
 
