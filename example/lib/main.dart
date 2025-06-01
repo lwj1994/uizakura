@@ -98,7 +98,7 @@ class MainViewModelFactory extends UiaraViewModelFactory<MainViewModel> {
   }
 
   @override
-  bool unique() {
+  bool singleton() {
     return true;
   }
 }

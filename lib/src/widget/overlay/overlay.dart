@@ -38,12 +38,17 @@ class OverlayManager {
 
   void removeByTag(Object? tag) {
     if (tag == null) return;
+    findByTag(tag)?.remove();
+  }
+
+  OverlayEntryHandle? findByTag(Object tag) {
     for (int i = _list.length - 1; i >= 0; i--) {
       final e = _list[i];
       if (e.tag == tag) {
-        e.remove();
+        return e;
       }
     }
+    return null;
   }
 
   void removeWhere(bool Function(OverlayEntryHandle e) where) {
