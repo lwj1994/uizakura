@@ -39,7 +39,6 @@ dependencies:
   visibility_detector: ^0.4.0+2
   widget_lifecycle: ">=1.4.0"
   intl: ">=0.20.2"
-  dart_mappable:
   uuid: ^4.5.1
   view_model: ^0.4.2
   data_class_annotation:
@@ -58,4 +57,3 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ">=5.0.0"
   build_runner:
-  dart_mappable_builder:

@@ -25,25 +25,25 @@ class UiaraFilePicker {
         List<PickFile> data = [];
         if (image == null) {
           data = [];
-          return Success();
+          return Async.success();
         }
         data = [PickFile(filePath: image.path, mimeType: image.mimeType ?? "")];
-        return Success(data: data);
+        return Async.success(data: data);
       } else {
         final images = await picker.pickMultipleMedia();
         List<PickFile> data = [];
         if (images.isEmpty) {
           data = [];
-          return Success();
+          return Async.success();
         }
         data = images
             .map((image) =>
                 PickFile(filePath: image.path, mimeType: image.mimeType ?? ""))
             .toList();
-        return Success(data: data);
+        return Async.success(data: data);
       }
     } catch (e) {
-      return Error(message: "media select error $e");
+      return Async.error(message: "media select error $e");
     }
   }
 
@@ -55,12 +55,12 @@ class UiaraFilePicker {
       List<PickFile> data = [];
       if (image == null) {
         data = [];
-        return Success();
+        return Async.success();
       }
       data = [PickFile(filePath: image.path, mimeType: image.mimeType ?? "")];
-      return Success(data: data);
+      return Async.success(data: data);
     } catch (e) {
-      return Error(message: "video select error $e");
+      return Async.error(message: "video select error $e");
     }
   }
 
@@ -75,25 +75,25 @@ class UiaraFilePicker {
         List<PickFile> data = [];
         if (image == null) {
           data = [];
-          return Success();
+          return Async.success();
         }
         data = [PickFile(filePath: image.path, mimeType: image.mimeType ?? "")];
-        return Success(data: data);
+        return Async.success(data: data);
       } else {
         final images = await picker.pickMultiImage();
         List<PickFile> data = [];
         if (images.isEmpty) {
           data = [];
-          return Success();
+          return Async.success();
         }
         data = images
             .map((image) =>
                 PickFile(filePath: image.path, mimeType: image.mimeType ?? ""))
             .toList();
-        return Success(data: data);
+        return Async.success(data: data);
       }
     } catch (e) {
-      return Error(message: "image select error $e");
+      return Async.error(message: "image select error $e");
     }
   }
 }

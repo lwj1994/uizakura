@@ -86,6 +86,7 @@ class LoadingOverlayState with _LoadingOverlayState {
   final double? value;
   @override
   final String? key;
+  @override
   final String text;
 
   const LoadingOverlayState({

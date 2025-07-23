@@ -6,14 +6,17 @@ part of 'loading_overlay.dart';
 mixin _LoadingOverlayState {
   abstract final double? value;
   abstract final String? key;
+  abstract final String text;
 
   LoadingOverlayState copyWith({
     double? value,
     String? key,
+    String? text,
   }) {
     return LoadingOverlayState(
       value: value ?? this.value,
       key: key ?? this.key,
+      text: text ?? this.text,
     );
   }
 
@@ -28,14 +31,16 @@ mixin _LoadingOverlayState {
 
     if (value != other.value) return false;
     if (key != other.key) return false;
+    if (text != other.text) return false;
     return true;
   }
 
   @override
-  int get hashCode => value.hashCode ^ key.hashCode;
+  int get hashCode => value.hashCode ^ key.hashCode ^ text.hashCode;
 
   Map<String, dynamic> toMap() => {
         'value': value,
         'key': key,
+        'text': text,
       };
 }

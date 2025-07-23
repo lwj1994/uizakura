@@ -7,6 +7,8 @@ import 'package:crypto/crypto.dart' as crypto;
 import 'package:encrypt/encrypt.dart';
 import 'package:pointycastle/asymmetric/api.dart';
 
+import 'async_state.dart';
+
 /// @author luwenjie on 2023/3/18 21:01:20
 ///
 ///
@@ -76,7 +78,7 @@ class EncryptUtil {
           .convert(data.readAsBytesSync())
           .toString(); // 283M文件用时14148毫秒
     } else {
-      throw Error();
+      throw Async.error();
     }
   }
 
