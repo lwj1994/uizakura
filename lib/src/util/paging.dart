@@ -8,7 +8,7 @@ abstract class UiaraPagingDateSource<T> {
   ListPaging<T>? previousPaging;
   final ValueNotifier<ListPaging<T>?> _dataNotifier = ValueNotifier(null);
 
-  List<T> get all => _all;
+  List<T> get all => List.unmodifiable(_all);
 
   // no effect with [all] [previousPaging]
   var _dryRun = false;
