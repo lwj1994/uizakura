@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:data_class_annotation/data_class_annotation.dart';
+import 'package:dataforge_annotation/dataforge_annotation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:uizakura/uizakura.dart';
 import 'package:uuid/v4.dart';
