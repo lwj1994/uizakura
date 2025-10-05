@@ -40,10 +40,10 @@ mixin LoadingOverlayStateMixin<T extends StatefulWidget> on State<T> {
   void showLoadingOverlay(LoadingOverlayState loading) {
     final state = loading.copyWith(key: _overlayKey);
     if (isLoadingOverlayShowing) {
-      final vm = ViewModel.read<LoadingOverlayViewModel>(
+      final vm = ViewModel.maybeReadCached<LoadingOverlayViewModel>(
         key: _overlayKey,
       );
-      vm.setState(state);
+      vm?.setState(state);
     } else {
       overlayManager.show(context, priority: 99, tag: _overlayKey,
           builder: (c, handle) {
