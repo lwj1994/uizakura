@@ -8,39 +8,103 @@ mixin _LoadingOverlayState {
   abstract final String? key;
   abstract final String text;
 
-  LoadingOverlayState copyWith({
+  _LoadingOverlayStateCopyWith get copyWith =>
+      _LoadingOverlayStateCopyWith._(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! LoadingOverlayState) return false;
+
+    if (value != other.value) {
+      return false;
+    }
+    if (key != other.key) {
+      return false;
+    }
+    if (text != other.text) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hashAll([
+      value,
+      key,
+      text,
+    ]);
+  }
+
+  @override
+  String toString() {
+    return 'LoadingOverlayState(value: $value, key: $key, text: $text)';
+  }
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    if (value != null) {
+      map['value'] = value;
+    }
+    if (key != null) {
+      map['key'] = key;
+    }
+    map['text'] = text;
+    return map;
+  }
+
+  static LoadingOverlayState fromJson(Map<String, dynamic> map) {
+    return LoadingOverlayState(
+      value: SafeCasteUtil.safeCast<double>(map['value']),
+      key: SafeCasteUtil.safeCast<String>(map['key']),
+      text: SafeCasteUtil.safeCast<String>(map['text']) ?? "",
+    );
+  }
+}
+
+/// Helper class for chained copyWith operations
+class _LoadingOverlayStateCopyWith {
+  final _LoadingOverlayState _instance;
+  const _LoadingOverlayStateCopyWith._(this._instance);
+
+  /// Update value field
+  LoadingOverlayState value(double? value) {
+    return LoadingOverlayState(
+      value: value,
+      key: _instance.key,
+      text: _instance.text,
+    );
+  }
+
+  /// Update key field
+  LoadingOverlayState key(String? value) {
+    return LoadingOverlayState(
+      value: _instance.value,
+      key: value,
+      text: _instance.text,
+    );
+  }
+
+  /// Update text field
+  LoadingOverlayState text(String? value) {
+    return LoadingOverlayState(
+      value: _instance.value,
+      key: _instance.key,
+      text: value ?? _instance.text,
+    );
+  }
+
+  /// Traditional copyWith method
+  LoadingOverlayState call({
     double? value,
     String? key,
     String? text,
   }) {
     return LoadingOverlayState(
-      value: value ?? this.value,
-      key: key ?? this.key,
-      text: text ?? this.text,
+      value: value ?? _instance.value,
+      key: key ?? _instance.key,
+      text: text ?? _instance.text,
     );
   }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-    if (other is! LoadingOverlayState) {
-      return false;
-    }
-
-    if (value != other.value) return false;
-    if (key != other.key) return false;
-    if (text != other.text) return false;
-    return true;
-  }
-
-  @override
-  int get hashCode => value.hashCode ^ key.hashCode ^ text.hashCode;
-
-  Map<String, dynamic> toMap() => {
-        'value': value,
-        'key': key,
-        'text': text,
-      };
 }

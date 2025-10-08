@@ -6,7 +6,7 @@ class UizakuraNotifier<T extends Object> extends ChangeNotifier {
   final String id;
 
   UizakuraNotifier({this.id = "", T? value}) {
-    this._value = value;
+    _value = value;
   }
 
   T? get value => _value;

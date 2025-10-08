@@ -94,6 +94,9 @@ class LoadingOverlayState with _LoadingOverlayState {
     this.key,
     this.text = "",
   });
+  factory LoadingOverlayState.fromJson(Map<String, dynamic> json) {
+    return _LoadingOverlayState.fromJson(json);
+  }
 }
 
 class _State extends State<LoadingOverlay> with ViewModelStateMixin {

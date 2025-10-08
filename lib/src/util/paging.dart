@@ -131,20 +131,20 @@ class ListPaging<T> {
   }) {
     return ListPaging(
       items: items ?? this.items,
-      isSuccess: success ?? this.isSuccess,
+      isSuccess: success ?? isSuccess,
       hasMore: hasMore ?? this.hasMore,
       errorMessage: errorMessage ?? this.errorMessage,
-      cursor: next ?? this.cursor,
+      cursor: next ?? cursor,
       total: total ?? this.total,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'items': this.items,
-      'success': this.isSuccess,
-      'hasMore': this.hasMore,
-      'errorMessage': this.errorMessage,
+      'items': items,
+      'success': isSuccess,
+      'hasMore': hasMore,
+      'errorMessage': errorMessage,
     };
   }
 

@@ -15,7 +15,7 @@ class PickFile {
 }
 
 class UiaraFilePicker {
-  static Future<Async<List<PickFile>>> pickMedia(BuildContext context,
+  static Future<AsyncResult<List<PickFile>>> pickMedia(BuildContext context,
       {bool allowMultiple = false}) async {
     try {
       final ImagePicker picker = ImagePicker();
@@ -25,29 +25,30 @@ class UiaraFilePicker {
         List<PickFile> data = [];
         if (image == null) {
           data = [];
-          return Async.success();
+          return AsyncResult.success();
         }
         data = [PickFile(filePath: image.path, mimeType: image.mimeType ?? "")];
-        return Async.success(data: data);
+        return AsyncResult.success(data: data);
       } else {
         final images = await picker.pickMultipleMedia();
         List<PickFile> data = [];
         if (images.isEmpty) {
           data = [];
-          return Async.success();
+          return AsyncResult.success();
         }
         data = images
             .map((image) =>
                 PickFile(filePath: image.path, mimeType: image.mimeType ?? ""))
             .toList();
-        return Async.success(data: data);
+        return AsyncResult.success(data: data);
       }
     } catch (e) {
-      return Async.error(message: "media select error $e");
+      return AsyncResult.error(message: "media select error $e");
     }
   }
 
-  static Future<Async<List<PickFile>>> pickVideo(BuildContext context) async {
+  static Future<AsyncResult<List<PickFile>>> pickVideo(
+      BuildContext context) async {
     try {
       final ImagePicker picker = ImagePicker();
 
@@ -55,16 +56,16 @@ class UiaraFilePicker {
       List<PickFile> data = [];
       if (image == null) {
         data = [];
-        return Async.success();
+        return AsyncResult.success();
       }
       data = [PickFile(filePath: image.path, mimeType: image.mimeType ?? "")];
-      return Async.success(data: data);
+      return AsyncResult.success(data: data);
     } catch (e) {
-      return Async.error(message: "video select error $e");
+      return AsyncResult.error(message: "video select error $e");
     }
   }
 
-  static Future<Async<List<PickFile>>> pickImage(BuildContext context,
+  static Future<AsyncResult<List<PickFile>>> pickImage(BuildContext context,
       {bool allowMultiple = false}) async {
     try {
       final ImagePicker picker = ImagePicker();
@@ -75,25 +76,25 @@ class UiaraFilePicker {
         List<PickFile> data = [];
         if (image == null) {
           data = [];
-          return Async.success();
+          return AsyncResult.success();
         }
         data = [PickFile(filePath: image.path, mimeType: image.mimeType ?? "")];
-        return Async.success(data: data);
+        return AsyncResult.success(data: data);
       } else {
         final images = await picker.pickMultiImage();
         List<PickFile> data = [];
         if (images.isEmpty) {
           data = [];
-          return Async.success();
+          return AsyncResult.success();
         }
         data = images
             .map((image) =>
                 PickFile(filePath: image.path, mimeType: image.mimeType ?? ""))
             .toList();
-        return Async.success(data: data);
+        return AsyncResult.success(data: data);
       }
     } catch (e) {
-      return Async.error(message: "image select error $e");
+      return AsyncResult.error(message: "image select error $e");
     }
   }
 }

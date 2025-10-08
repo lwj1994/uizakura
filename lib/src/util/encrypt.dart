@@ -78,7 +78,7 @@ class EncryptUtil {
           .convert(data.readAsBytesSync())
           .toString(); // 283M文件用时14148毫秒
     } else {
-      throw Async.error();
+      throw AsyncResult.error();
     }
   }
 
