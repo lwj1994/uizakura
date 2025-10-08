@@ -62,13 +62,15 @@ extension SliverExtension on Widget {
 extension WidgetStateExtension on State<dynamic> {
   /// 等待当前帧结束再触发 setState
   Future<void> setStateWhenEndOfFrame() async {
-    if (!mounted) return;
-    if (SchedulerBinding.instance.schedulerPhase != SchedulerPhase.idle) {
-      await SchedulerBinding.instance.endOfFrame;
-      if (!mounted) return;
+    if (SchedulerBinding.instance.schedulerPhase != SchedulerPhase.idle ||
+        !mounted) {
+      postFrameCallback(() {
+        setStateWhenEndOfFrame();
+      });
+    } else {
+      // ignore: invalid_use_of_protected_member
+      setState(() {});
     }
-    // ignore: invalid_use_of_protected_member
-    setState(() {});
   }
 
   Future<T> postFrameCallback<T>(FutureOr<T> Function() thenCallback) {

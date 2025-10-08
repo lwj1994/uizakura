@@ -33,7 +33,7 @@ abstract class UiaraPageState<T extends UiaraPage> extends State<T>
   bool _showing = false;
   bool _disposed = false;
 
-  bool get isDisposed => _disposed || !mounted;
+  bool get isDisposed => _disposed;
 
   bool get isShowing => _showing;
 
@@ -47,10 +47,10 @@ abstract class UiaraPageState<T extends UiaraPage> extends State<T>
   @override
   void didChangePlatformBrightness() {
     super.didChangePlatformBrightness();
-    invalidate();
+    refreshState();
   }
 
-  Future<void> invalidate() async {
+  Future<void> refreshState() async {
     if (isDisposed) return;
     await setStateWhenEndOfFrame();
   }

@@ -19,7 +19,6 @@ export "src/widget/dropdown_overlay.dart";
 export 'src/widget/image/animation/controller.dart';
 export 'src/widget/image/animation/gif.dart';
 export 'src/widget/image/widget.dart';
-export "src/widget/load_more.dart";
 export "src/widget/loading/loading_overlay.dart";
 export "src/widget/notifier.dart";
 export "src/widget/overlay/anim.dart";
